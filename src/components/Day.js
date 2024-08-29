@@ -33,7 +33,7 @@ export default function Day({ day, rowIdx }) {
           </p>
         )}
         <p
-          className={`text-sm p-1 my-1 text-center  ${getCurrentDayClass()}`}
+          className={`text-xxs p-1 my-1 text-center ${getCurrentDayClass()}`}
         >
           {day.format("DD")}
         </p>
