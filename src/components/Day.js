@@ -25,7 +25,7 @@ export default function Day({ day, rowIdx }) {
       : "";
   }
   return (
-    <div className="flex flex-col border border-gray-200">
+    <div className="flex flex-col border border-gray-200 ">
       <header className="flex flex-col items-center">
         {rowIdx === 0 && (
           <p className="text-sm mt-1">
@@ -49,10 +49,10 @@ export default function Day({ day, rowIdx }) {
           <div
             key={idx}
             onClick={() => setSelectedEvent(evt)}
-            className={`flex items-center bg-${evt.label}-200 p-1 mr-3 text-gray-700 text-sm rounded mb-1 truncate`}
+            className={`flex items-center bg-${evt.label}-200 p-1 mr-1 text-gray-700 rounded-lg mb-1 text-xs font-bold shadow-md`}
           >
-            <div className="whitespace-nowrap">
-              <span className="inline-block h-6 w-1 bg-blue-700 mr-2"></span>
+            <div className="flex items-center">
+              <span className="inline-block h-10 w-1 bg-blue-700 mr-2"></span>
             </div>
 
             {evt.title}

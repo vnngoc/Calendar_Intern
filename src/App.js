@@ -18,7 +18,7 @@ function App() {
     <React.Fragment>
       {showEventModal && <EventModal />}
 
-      <div className="flex flex-col h-screen bg-gray-300">
+      <div className="flex flex-col min-h-screen bg-gray-300">
         <CalendarHeader />
         <div className="flex flex-1">
           <Sidebar />

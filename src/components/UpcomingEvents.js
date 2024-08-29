@@ -1,45 +1,47 @@
 import React, { useContext, useEffect, useState } from "react";
 import GlobalContext from "../context/GlobalContext";
 import dayjs from "dayjs";
-export default function Labels({ day, rowIdx }) {
+export default function Labels({ day }) {
   const [dayEvents, setDayEvents] = useState([]);
+  // const { labels, updateLabel} = useContext(GlobalContext);
 
-  const { labels, updateLabel, daySelected } = useContext(GlobalContext);
-  const calendarEvent = {
-    day: daySelected.valueOf(),
-  };
   const {
-    setDaySelected,
-    setShowEventModal,
     filteredEvents,
     setSelectedEvent,
+    daySelected,
+    setShowEventModal
   } = useContext(GlobalContext);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
 
   useEffect(() => {
-    const events = filteredEvents.filter(
-      (evt) =>
-        dayjs(evt.day).format("DD-MM-YY") === dayjs().format("DD-MM-YY")
-    );
-    setDayEvents(events);
-  }, [filteredEvents, day]);
+    const events = filteredEvents
+      .filter(evt => dayjs(evt.day).isAfter(dayjs(), 'day') || dayjs(evt.day).isSame(dayjs(), 'day'))
+      .sort((a, b) => dayjs(a.day).diff(dayjs(b.day)));
+    setUpcomingEvents(events);
+  }, [filteredEvents]);
+
   return (
     <React.Fragment>
       <p className="mt-10 font-bold text-[#0F4C81]">Upcoming Events</p>
-      <p>{daySelected.format("dddd, MMMM DD")}</p>
-      <br />
-      <p>{dayEvents.map((evt, idx) => (
-        <div
-          key={idx}
-          onClick={() => setSelectedEvent(evt)}
-          className={`flex items-center bg-${evt.label}-200 p-1 mr-3 text-gray-700 text-sm rounded mb-1 truncate`}
-        >
-          <div className="whitespace-nowrap">
-            <span className="inline-block h-6 w-1 bg-blue-700 mr-2"></span>
+      <p class="text-sm">{daySelected.format("dddd, MMMM DD")}</p>
+      <p>{upcomingEvents.length > 0 ? (
+        upcomingEvents.map((evt, idx) => (
+          <div
+            key={idx}
+            onClick={() => {
+              setSelectedEvent(evt);
+              setShowEventModal(true);
+            }}
+            className={`flex items-center bg-${evt.label}-200 p-1 my-1 shadow-md text-gray-700 rounded-lg text-xs font-semibold cursor-pointer`}
+          >
+            <span className="inline-block h-10 w-1 bg-blue-700 mr-1 flex-shrink-0"></span>
+            {evt.title}
           </div>
-
-          {evt.title}
-        </div>
-      ))}</p>
+        ))
+      ) : (
+        <p>No upcoming events.</p>
+      )}
+      </p>
       {/* {labels.map(({ label: lbl, checked }, idx) => (
         <label key={idx} className="items-center mt-3 block">
           <input
